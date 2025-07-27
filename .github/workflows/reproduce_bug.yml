@@ -27,19 +27,22 @@ jobs:
     #     .venv/bin/python asyncio_example.py &
     #     echo "EXAMPLE_APP_PID=$!" >> $GITHUB_ENV
 
-    - name: Install Python 3.14.0rc1
-      run: uv python install 3.14.0rc1
+    # - name: Install Python 3.14.0rc1
+    #   run: uv python install 3.14.0rc1
+    - uses: actions/setup-python@v5
+      with:
+        python-version: 3.14.0rc1
 
     - name: Run example app
       shell: bash
       run: |
-        uv run --python=3.14.0rc1 asyncio_example.py &
+        python asyncio_example.py &
         echo "EXAMPLE_APP_PID=$!" >> $GITHUB_ENV
 
     - name: Run Asyncio introspection feature
       shell: bash
       run:
-        sudo uv run python -m asyncio ps ${{ env.EXAMPLE_APP_PID }}
+        sudo python -m asyncio ps ${{ env.EXAMPLE_APP_PID }}
 
 
     - name: Stop example app
