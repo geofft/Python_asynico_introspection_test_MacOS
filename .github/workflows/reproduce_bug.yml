@@ -4,8 +4,7 @@ on:
   workflow_dispatch:
 jobs:
   test:
-    name: Attemp to reproduce, non-reproduction of Python 3.14.0rc1 asyncio introspection feature
-    
+    name: ${{ matrix.os }}.  Try to reproduce Python 3.14.0rc1 asyncio introspection feature
     strategy: 
       fail-fast: false
       matrix:
@@ -40,7 +39,7 @@ jobs:
     - name: Run Asyncio introspection feature
       shell: bash
       run:
-        uv run python -m asyncio ps ${{ env.EXAMPLE_APP_PID }}
+        sudo uv run python -m asyncio ps ${{ env.EXAMPLE_APP_PID }}
 
 
     - name: Stop example app
