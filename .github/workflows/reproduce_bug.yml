@@ -33,25 +33,26 @@ jobs:
       with:
         python-version: "3.14.0-rc.1"
 
-    - name: Run example app
+    - name: Run example app and asyncio pstree
       shell: bash
       run: |
         python asyncio_example.py &
-        echo "EXAMPLE_APP_PID=$!" >> $GITHUB_ENV
+        sudo python -m asyncio pstree $!
+      # echo "EXAMPLE_APP_PID=$!" >> $GITHUB_ENV
 
     # - name: Run Asyncio ps
     #   shell: bash
     #   run:
     #     sudo python -m asyncio ps ${{ env.EXAMPLE_APP_PID }}
-    - name: Run Asyncio pstree
-      shell: bash
-      run:
-        sudo python -m asyncio pstree ${{ env.EXAMPLE_APP_PID }}
+    # - name: Run Asyncio pstree
+    #   shell: bash
+    #   run:
+    #     sudo python -m asyncio pstree ${{ env.EXAMPLE_APP_PID }}
 
 
-    - name: Stop example app
-      shell: bash
-      run: |
-        echo Killing process ID: ${{ env.EXAMPLE_APP_PID }}
-        kill ${{ env.EXAMPLE_APP_PID }}
+    # - name: Stop example app
+    #   shell: bash
+    #   run: |
+    #     echo Killing process ID: ${{ env.EXAMPLE_APP_PID }}
+    #     kill ${{ env.EXAMPLE_APP_PID }}
   
