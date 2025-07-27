@@ -7,6 +7,7 @@ jobs:
     name: Attemp to reproduce, non-reproduction of Python 3.14.0rc1 asyncio introspection feature
     
     strategy: 
+      fail-fast: false
       matrix:
         os: [
           "macos-latest",
@@ -22,6 +23,7 @@ jobs:
       run: uv venv .venv --python=3.14.0rc1
 
     - name: Run example app
+      shell: bash
       run: |
         .venv/bin/python asyncio_example.py &
         echo "EXAMPLE_APP_PID=$!" >> $GITHUB_ENV
@@ -31,5 +33,5 @@ jobs:
     - name: Stop example app
       run: |
         echo Killing process ID: ${{ env.EXAMPLE_APP_PID }}
-        kill ${{ env.HTTP_SERVER_PID }}
+        kill ${{ env.EXAMPLE_APP_PID }}
   
