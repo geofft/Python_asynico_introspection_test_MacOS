@@ -43,7 +43,10 @@ jobs:
     - name: Run example app and asyncio pstree (Windows)
       if: runner.os == 'Windows'
       shell: pwsh
+      env:
+        PYTHONIOENCODING: utf-8
       run: |
+        $OutputEncoding = [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
         if ('${{ matrix.python-install-method }}' -eq 'via-uv') {
           .\.venv\Scripts\Activate.ps1
         }
