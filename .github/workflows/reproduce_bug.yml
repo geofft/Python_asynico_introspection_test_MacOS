@@ -48,5 +48,5 @@ jobs:
           .\.venv\Scripts\Activate.ps1
         }
         python --version
-        $PID = python -c "import subprocess; p = subprocess.Popen(['python', 'asyncio_example.py']); print(p.pid)"
-        python -m asyncio pstree $PID
+        $THEPID = python -c "import subprocess; p = subprocess.Popen(['python', 'asyncio_example.py']); print(p.pid)"
+        python -m asyncio pstree $THEPID
