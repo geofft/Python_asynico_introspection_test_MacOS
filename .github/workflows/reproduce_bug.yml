@@ -18,8 +18,8 @@ jobs:
     - uses: actions/checkout@v4
     - name: Install uv
       uses: astral-sh/setup-uv@v4
-    # - name: Create Python 3.14.0rc1 venv
-    #   run: uv venv .venv --python=3.14.0rc1
+    - name: Create Python 3.14.0rc1 venv
+      run: uv venv .venv --python=3.14.0rc1
 
     # - name: Run example app
     #   shell: bash
@@ -29,13 +29,14 @@ jobs:
 
     # - name: Install Python 3.14.0rc1
     #   run: uv python install 3.14.0rc1
-    - uses: actions/setup-python@v5
-      with:
-        python-version: "3.14.0-rc.1"
+    # - uses: actions/setup-python@v5
+    #   with:
+    #     python-version: "3.14.0-rc.1"
 
     - name: Run example app and asyncio pstree
       shell: bash
       run: |
+        source .venv/bin/activate
         python asyncio_example.py &
         sudo python -m asyncio pstree $!
       # echo "EXAMPLE_APP_PID=$!" >> $GITHUB_ENV
