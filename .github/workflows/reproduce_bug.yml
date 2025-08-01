@@ -44,5 +44,5 @@ jobs:
       if: runner.os == 'Windows'
       shell: pwsh
       run: |
-        $app = Start-Process -FilePath python -ArgumentList 'asyncio_example.py'
-        python -m asyncio pstree $app.id
+        python --version
+        python -m asyncio pstree (Start-Process -FilePath python -ArgumentList 'asyncio_example.py').ID
