@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 jobs:
   test:
-    name: ${{ matrix.os }}.  Try to reproduce Python 3.14.0rc1 asyncio introspection feature
+    name: ${{ matrix.os }} / ${{ matrix.python-install-method }}.  Try to reproduce Python 3.14.0rc1 asyncio introspection feature
     strategy: 
       fail-fast: false
       matrix:
@@ -13,47 +13,28 @@ jobs:
           "ubuntu-24.04",
           "windows-latest",
         ]
+        python-install-method: [via-uv, via-setup-python]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
+    
     - name: Install uv
+      if: matrix.python-install-method == 'via-uv'
       uses: astral-sh/setup-uv@v4
     - name: Create Python 3.14.0rc1 venv
+      if: matrix.python-install-method == 'via-uv'
       run: uv venv .venv --python=3.14.0rc1
 
-    # - name: Run example app
-    #   shell: bash
-    #   run: |
-    #     .venv/bin/python asyncio_example.py &
-    #     echo "EXAMPLE_APP_PID=$!" >> $GITHUB_ENV
-
-    # - name: Install Python 3.14.0rc1
-    #   run: uv python install 3.14.0rc1
-    # - uses: actions/setup-python@v5
-    #   with:
-    #     python-version: "3.14.0-rc.1"
+    - uses: actions/setup-python@v5
+      if: matrix.python-install-method == 'via-setup-python'
+      with:
+        python-version: "3.14.0-rc.1"
 
     - name: Run example app and asyncio pstree
       shell: bash
       run: |
-        source .venv/bin/activate
+        if [ "${{ matrix.python-install-method }}" == "via-uv" ]; then
+          source .venv/bin/activate
+        fi
         python asyncio_example.py &
         sudo python -m asyncio pstree $!
-      # echo "EXAMPLE_APP_PID=$!" >> $GITHUB_ENV
-
-    # - name: Run Asyncio ps
-    #   shell: bash
-    #   run:
-    #     sudo python -m asyncio ps ${{ env.EXAMPLE_APP_PID }}
-    # - name: Run Asyncio pstree
-    #   shell: bash
-    #   run:
-    #     sudo python -m asyncio pstree ${{ env.EXAMPLE_APP_PID }}
-
-
-    # - name: Stop example app
-    #   shell: bash
-    #   run: |
-    #     echo Killing process ID: ${{ env.EXAMPLE_APP_PID }}
-    #     kill ${{ env.EXAMPLE_APP_PID }}
-  
