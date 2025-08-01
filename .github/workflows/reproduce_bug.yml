@@ -31,6 +31,7 @@ jobs:
         python-version: "3.14.0-rc.1"
 
     - name: Run example app and asyncio pstree
+      if: runner.os != 'Windows'
       shell: bash
       run: |
         if [ "${{ matrix.python-install-method }}" == "via-uv" ]; then
@@ -38,3 +39,10 @@ jobs:
         fi
         python asyncio_example.py &
         sudo python -m asyncio pstree $!
+
+    - name: Run example app and asyncio pstree (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        $app = Start-Process -FilePath python -ArgumentList 'asyncio_example.py'
+        python -m asyncio pstree $app.id
