@@ -44,5 +44,9 @@ jobs:
       if: runner.os == 'Windows'
       shell: pwsh
       run: |
+        if ('${{ matrix.python-install-method }}' -eq 'via-uv') {
+          .\.venv\Scripts\Activate.ps1
+        }
         python --version
-        python -m asyncio pstree (Start-Process -FilePath python -ArgumentList 'asyncio_example.py').ID
+        $PID = python -c "import subprocess; p = subprocess.Popen(['python', 'asyncio_example.py']); print(p.pid)"
+        python -m asyncio pstree $PID
