@@ -2,7 +2,7 @@ import asyncio
 
 async def play(track):
     await asyncio.sleep(5)
-    print(f"./~./~ Finished: {track}")
+    print(f"🎵 Finished: {track}")
 
 async def album(name, tracks):
     async with asyncio.TaskGroup() as tg:
