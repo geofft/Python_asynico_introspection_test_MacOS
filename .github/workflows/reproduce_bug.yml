@@ -40,7 +40,7 @@ jobs:
         sudo python --version
         sudo python -c 'import sys; print(sys.executable)'
         python asyncio_example.py &
-        sudo python -m asyncio pstree $!
+        sudo python -c "import asyncio.tools; asyncio.tools.get_all_awaited_by($!)"
 
     - name: Run example app and asyncio pstree (Windows)
       if: runner.os == 'Windows'
